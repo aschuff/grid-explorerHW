@@ -1,9 +1,7 @@
 module.exports = Backbone.Model.extend({
     defaults: {
         rightLeftMove: 0,
-        // leftMove: 0,
         upDownMove: 0,
-        // downMove: 0,
     },
 
     right: function() {
