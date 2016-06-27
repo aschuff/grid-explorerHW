@@ -34,7 +34,7 @@ gulp.task('html', function(){
 
 //JS
 gulp.task('js', function(){
-  gulp.src('./js/app.js')
+  gulp.src('./js/*.js')
     // .pipe(jsValidate())
     // .pipe(concat('./js/app.js'))
     .pipe(babel({
@@ -49,5 +49,6 @@ gulp.task('js', function(){
 gulp.task('watch', function(){ //npm install gulp-watch
   gulp.watch('./sass/*.scss', ['css']);
   gulp.watch('./index.html', ['html']);
-  gulp.watch('./js/app.js', ['js']);
+  gulp.watch('./js/*.js', ['js']);
+  gulp.watch('./js/*/*.js', ['js']);
 });
