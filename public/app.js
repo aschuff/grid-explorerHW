@@ -26,57 +26,100 @@
 
         var MovesModel = require('./models/movesModel');
         var MovesView = require('./views/movesView');
+        var UserModel = require('./models/userModel');
+        var UserView = require('./views/UserView');
 
         window.addEventListener('load', function() {
             // MODELS
             var movesM = new MovesModel();
+            var userM = new UserModel();
 
             //VIEWS
             var movesV = new MovesView({
                 model: movesM,
                 el: document.getElementById('directions')
             });
+            var userV = new UserView({
+                model: userM,
+                el: document.getElementById('logIn')
+            });
         });
     }, {
         "./models/movesModel": 2,
-        "./views/movesView": 3
+        "./models/userModel": 3,
+        "./views/UserView": 4,
+        "./views/movesView": 5
     }],
     2: [function(require, module, exports) {
         module.exports = Backbone.Model.extend({
             defaults: {
-                rightMove: 0,
-                leftMove: 0,
-                upMove: 0,
-                downMove: 0,
+                rightLeftMove: 0,
+                // leftMove: 0,
+                upDownMove: 0,
+                // downMove: 0,
             },
 
             right: function() {
-                if (this.get('rightMove') < 10) {
-                    this.set('rightMove', this.get('rightMove') + 1)
+                if (this.get('rightLeftMove') < 10) {
+                    this.set('rightLeftMove', this.get('rightLeftMove') + 1)
                 }
             },
 
             left: function() {
-                if (this.get('leftMove') > -10) {
-                    this.set('leftMove', this.get('leftMove') - 1)
+                if (this.get('rightLeftMove') > -10) {
+                    this.set('rightLeftMove', this.get('rightLeftMove') - 1)
                 }
             },
 
             up: function() {
-                if (this.get('upMove') < 10) {
-                    this.set('upMove', this.get('upMove') + 1)
+                if (this.get('upDownMove') < 10) {
+                    this.set('upDownMove', this.get('upDownMove') + 1)
                 }
             },
-
             down: function() {
-                if (this.get('downMove') > -10) {
-                    this.set('downMove', this.get('downMove') - 1)
+                if (this.get('upDownMove') > -10) {
+                    this.set('upDownMove', this.get('upDownMove') - 1)
                 }
             }
         });
 
     }, {}],
     3: [function(require, module, exports) {
+        module.exports = Backbone.Model.extend({
+            defaults: {
+                username: ''
+            },
+            // start button function
+            startButton: function(userNameValue) {
+                this.set('username', userNameValue)
+            }
+        });
+
+    }, {}],
+    4: [function(require, module, exports) {
+        module.exports = Backbone.View.extend({
+
+            initialize: function() {
+                this.model.on('change', this.render, this);
+            },
+            events: {
+                'click #startButton': 'clickStart'
+            },
+            // start button events
+            clickStart: function() {
+                let userNameValue = document.getElementById('input').value;
+                console.log(userNameValue);
+                this.model.startButton(userNameValue);
+            },
+
+            render: function() {
+                let newUser = this.el.querySelector('#greeting');
+                newUser.textContent = `Hello ${this.model.get('username')}!`;
+            },
+        });
+
+    }, {}],
+    5: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -104,17 +147,17 @@
             },
 
             render: function() {
-                let rightButton = this.el.querySelector('#rightXY');
-                rightButton.textContent = this.model.get('rightMove');
+                let rightButton = this.el.querySelector('#xAxis');
+                rightButton.textContent = this.model.get('rightLeftMove');
 
-                let leftButton = this.el.querySelector('#leftXY');
-                leftButton.textContent = this.model.get('leftMove');
+                let leftButton = this.el.querySelector('#xAxis');
+                leftButton.textContent = this.model.get('rightLeftMove');
 
-                let upButton = this.el.querySelector('#upXY');
-                upButton.textContent = this.model.get('upMove');
+                let upButton = this.el.querySelector('#yAxis');
+                upButton.textContent = this.model.get('upDownMove');
 
-                let downButton = this.el.querySelector('#downXY');
-                downButton.textContent = this.model.get('downMove');
+                let downButton = this.el.querySelector('#yAxis');
+                downButton.textContent = this.model.get('upDownMove');
             },
         })
 

@@ -25,16 +25,16 @@ module.exports = Backbone.View.extend({
     },
 
     render: function() {
-      let rightButton = this.el.querySelector('#rightXY');
-        rightButton.textContent = this.model.get('rightMove');
+      let rightButton = this.el.querySelector('#xAxis');
+        rightButton.textContent = this.model.get('rightLeftMove');
 
-      let leftButton = this.el.querySelector('#leftXY');
-        leftButton.textContent = this.model.get('leftMove');
+      let leftButton = this.el.querySelector('#xAxis');
+        leftButton.textContent = this.model.get('rightLeftMove');
 
-      let upButton = this.el.querySelector('#upXY');
-        upButton.textContent = this.model.get('upMove');
+      let upButton = this.el.querySelector('#yAxis');
+        upButton.textContent = this.model.get('upDownMove');
 
-      let downButton = this.el.querySelector('#downXY');
-        downButton.textContent = this.model.get('downMove');
+      let downButton = this.el.querySelector('#yAxis');
+        downButton.textContent = this.model.get('upDownMove');
     },
 })
