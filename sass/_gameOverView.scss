@@ -1,0 +1,20 @@
+#gameOverField {
+    width: 25%;
+    height: 20em;
+    // display: inline-flex;
+    padding: 1%;
+    border: dotted #3CC9BB;
+    margin-top: 2%;
+    margin-left: 3%;
+    background-color: cornflowerblue;
+    color: #FFF;
+}
+#gameEnd {
+    text-align: center;
+    margin: 0 auto;
+}
+a {
+    cursor: pointer;
+    text-decoration: underline;
+    color: navy;
+}

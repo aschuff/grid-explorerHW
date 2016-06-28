@@ -24,14 +24,60 @@
     1: [function(require, module, exports) {
         'use strict';
 
-        var GameRouter = require('./router');
+        var MovesModel = require('./models/movesModel');
+        var LogInView = require('./views/logInView');
+        var GamePlayView = require('./views/gamePlayView');
+        var GameoverView = require('./views/gameoverView');
 
-        window.addEventListener('load', function() {
-            var router = new GameRouter();
-            Backbone.history.start();
+        module.exports = Backbone.Router.extend({
+            initialize: function initialize() {
+                // MODELS
+                var movesM = new MovesModel();
+
+                //VIEWS
+                this.logInV = new LogInView({
+                    model: movesM,
+                    el: document.getElementById('logIn')
+                });
+                this.gamePlayV = new GamePlayView({
+                    model: movesM,
+                    el: document.getElementById('gameField')
+                });
+                this.gameoverV = new GameoverView({
+                    model: movesM,
+                    el: document.getElementById('gameOverField')
+                });
+            },
+            routes: {
+                'logIn': 'logInNewGame',
+                'newGame': 'startGame',
+                'gameOver': 'gameOver',
+                '': 'logInNewGame'
+            },
+            logInNewGame: function logInNewGame() {
+                console.log('time to log in!');
+                this.logInV.el.classList.remove('hidden');
+                this.gamePlayV.el.classList.add('hidden');
+                this.gameoverV.el.classList.add('hidden');
+            },
+            startGame: function startGame() {
+                console.log('starting new game');
+                this.logInV.el.classList.add('hidden');
+                this.gamePlayV.el.classList.remove('hidden');
+                this.gameoverV.el.classList.add('hidden');
+            },
+            gameOver: function gameOver() {
+                console.log('start over :(');
+                this.gameoverV.el.classList.remove('hidden');
+                this.gamePlayV.el.classList.add('hidden');
+                this.logInV.el.classList.add('hidden');
+            }
         });
     }, {
-        "./router": 3
+        "./models/movesModel": 2,
+        "./views/gamePlayView": 3,
+        "./views/gameoverView": 4,
+        "./views/logInView": 5
     }],
     2: [function(require, module, exports) {
         module.exports = Backbone.Model.extend({
@@ -103,63 +149,6 @@
 
     }, {}],
     3: [function(require, module, exports) {
-        let MovesModel = require('./models/movesModel');
-        let LogInView = require('./views/logInView');
-        let GamePlayView = require('./views/gamePlayView');
-        let GameoverView = require('./views/gameoverView');
-
-        module.exports = Backbone.Router.extend({
-            initialize: function() {
-                // MODELS
-                let movesM = new MovesModel();
-
-                //VIEWS
-                this.logInV = new LogInView({
-                    model: movesM,
-                    el: document.getElementById('logIn'),
-                });
-                this.gamePlayV = new GamePlayView({
-                    model: movesM,
-                    el: document.getElementById('gameField'),
-                });
-                this.gameoverV = new GameoverView({
-                    model: movesM,
-                    el: document.getElementById('gameOverField')
-                });
-            },
-            routes: {
-                'logIn': 'logInNewGame',
-                'newGame': 'startGame',
-                'gameOver': 'gameOver',
-                '': 'logInNewGame',
-            },
-            logInNewGame: function() {
-                console.log('time to log in!');
-                this.logInV.el.classList.remove('hidden');
-                this.gamePlayV.el.classList.add('hidden');
-                this.gameoverV.el.classList.add('hidden');
-            },
-            startGame: function() {
-                console.log('starting new game');
-                this.logInV.el.classList.add('hidden');
-                this.gamePlayV.el.classList.remove('hidden');
-                this.gameoverV.el.classList.add('hidden');
-            },
-            gameOver: function() {
-                console.log('start over :(');
-                this.gameoverV.el.classList.remove('hidden');
-                this.gamePlayV.el.classList.add('hidden');
-                this.logInV.el.classList.add('hidden');
-            },
-        })
-
-    }, {
-        "./models/movesModel": 2,
-        "./views/gamePlayView": 4,
-        "./views/gameoverView": 5,
-        "./views/logInView": 6
-    }],
-    4: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -218,7 +207,7 @@
         });
 
     }, {}],
-    5: [function(require, module, exports) {
+    4: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -233,7 +222,7 @@
         });
 
     }, {}],
-    6: [function(require, module, exports) {
+    5: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {

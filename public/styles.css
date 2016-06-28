@@ -9,10 +9,13 @@ body {
   width: 100%;
   height: 100%; }
 
+.hidden {
+  display: none; }
+
 #logIn {
-  border: black solid 2px;
+  border: navy solid 2px;
   width: 30%;
-  height: 7em;
+  height: 16em;
   text-align: center;
   padding: 1%;
   background-color: cornflowerblue;
@@ -27,11 +30,59 @@ div {
 #greeting {
   font-size: medium; }
 
-#directions {
-  width: 30%;
-  display: inline-flex;
+#gameField {
+  width: 80%;
+  height: 25em;
   padding: 1%;
   border: dotted #3CC9BB;
   margin-top: 2%;
   background-color: cornflowerblue;
   color: #FFF; }
+
+#userEnergy, #userMoves {
+  float: right;
+  width: 13%;
+  height: 3em;
+  background-color: navy;
+  padding: 0;
+  margin: 1%;
+  color: #FFF; }
+
+#gridArea {
+  margin: 0 auto;
+  width: 35%;
+  height: 11em;
+  padding: 1%;
+  background-color: navy; }
+
+#moveOptions {
+  display: -webkit-box;
+  height: 3em; }
+
+#xAxis, #yAxis {
+  background-color: navy;
+  width: 10%;
+  height: 2em;
+  color: #FFF; }
+
+button {
+  border: navy solid 2px; }
+
+#gameOverField {
+  width: 25%;
+  height: 20em;
+  padding: 1%;
+  border: dotted #3CC9BB;
+  margin-top: 2%;
+  margin-left: 3%;
+  background-color: cornflowerblue;
+  color: #FFF; }
+
+#gameEnd {
+  text-align: center;
+  margin: 0 auto; }
+
+a {
+  cursor: pointer;
+  text-decoration: underline;
+  color: navy; }

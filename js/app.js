@@ -1,20 +1,7 @@
-let MovesModel = require('./models/movesModel');
-let MovesView = require('./views/movesView');
-let UserModel = require('./models/userModel');
-let UserView = require('./views/UserView');
+let GameRouter = require('./router');
 
 window.addEventListener('load', function(){
-// MODELS
-  let movesM = new MovesModel();
-  let userM = new UserModel();
+let router = new GameRouter();
+Backbone.history.start();
 
-//VIEWS
-  let movesV = new MovesView({
-    model: movesM,
-    el: document.getElementById('directions'),
-  });
-  let userV = new UserView({
-    model: userM,
-    el: document.getElementById('logIn'),
-  });
 });

@@ -1,0 +1,39 @@
+#gameField {
+    width: 80%;
+    height: 25em;
+    // display: inline-flex;
+    padding: 1%;
+    border: dotted #3CC9BB;
+    margin-top: 2%;
+    background-color: cornflowerblue;
+    color: #FFF;
+}
+#userEnergy, #userMoves {
+    float: right;
+    width: 13%;
+    height: 3em;
+    background-color: navy;
+    padding: 0;
+    margin: 1%;
+    color: #FFF;
+}
+#gridArea {
+    margin: 0 auto;
+    width: 35%;
+    height: 11em;
+    padding: 1%;
+    background-color: navy;
+}
+#moveOptions {
+    display: -webkit-box;
+    height: 3em;
+}
+#xAxis, #yAxis {
+    background-color: navy;
+    width: 10%;
+    height: 2em;
+    color: #FFF;
+}
+button {
+    border: navy solid 2px;
+}

@@ -9,20 +9,39 @@
   </head>
   <body>
     <div class="main">
-
       <section id="logIn">
         <div id= "greeting"></div>
+
+        <div id="charChoice">
+          <h4>Small Character</h4>
+          <input id="smallCharacter" type="radio" name="small" value="">
+          <h4>Large Character</h4>
+          <input id="largeCharacter" type="radio" name="small" value="">
+        </div>
+
         <input id="input" type="text" name="login" value="" placeholder="log in">
         <button id="startButton" type="button" name="Start">Start</button>
+        <a href="#logIn">LogIn</a>
+        <a href="#newGame">Play</a>
+
       </section>
 
-      <section id="playingField">
-        <div id="gridArea">
-          <h3>Playing Field</h3>
+      <section id="gameField">
+          <h3>Let's Play!</h3>
+          <p>
+            The more moves you make, the more Energy used.
+          </p>
+        <div id="userEnergy">
+          -
         </div>
-      </section>
+        <div id="userMoves">
+          -
+        </div>
+        <div id="gridArea">
 
-      <section id="directions">
+        </div>
+
+        <div id="moveOptions">
         <button id="right" type="button" name="button">Right</button>
         <div id="xAxis">
           -
@@ -38,6 +57,14 @@
         <button id="down" type="button" name="button">Down</button>
         <div id="yAxis">
           -
+        </div>
+        </div>
+      </section>
+
+      <section id="gameOverField">
+        <div id="gameEnd">
+          <h1>Game Over!</h1>
+          <a id="playAgain" href="#"><h3>Play Again? >>></h3></a>
         </div>
       </section>
 
