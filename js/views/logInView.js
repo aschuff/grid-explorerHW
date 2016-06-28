@@ -10,10 +10,14 @@ module.exports = Backbone.View.extend({
   },
   // start button events
   smallChar: function(){
-
+    let littleChar = document.getElementById('smallCharacter').value;
+    console.log('little one');
+    this.model.smallCharacter(littleChar);
   },
   largeChar: function(){
-
+    let bigChar = document.getElementById('largeCharacter').value;
+    console.log('big one');
+    this.model.largeCharacter(bigChar);
   },
 
   clickStart: function() {
