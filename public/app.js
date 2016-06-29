@@ -35,68 +35,111 @@
     }],
     2: [function(require, module, exports) {
         module.exports = Backbone.Model.extend({
+            // url: 'http://grid.queencityiron.com/api/players',
+            url: 'http://tiny-tiny.herokuapp.com/collections/gridAdventure',
+
             defaults: {
                 username: '',
-                charSize: 'small',
-                userEnergy: 100,
+                charSize: '',
+                userEnergy: 20,
                 moveCount: 0,
                 rightLeftMove: 0,
                 upDownMove: 0,
             },
-            smallCharacter: function() {
-                if ('charSize' === 'charSize') {
-                    this.set('userEnergy', this.get('userEnergy') - 2)
-                } else if ('charSize' != 'charSize') {
-                    this.set('userEnergy', this.get('userEnergy') - 5)
-                }
+            smallCharacter: function(littleChar) {
+                this.set('charSize', littleChar)
             },
 
-            largeCharacter: function() {
-                // 1.5x the energy
-                if ('charSize' === 'charSize') {
-                    this.set('userEnergy', this.get('userEnergy') - 2)
-                } else if ('charSize' != 'charSize') {
-                    this.set('userEnergy', this.get('userEnergy') - 5)
-                }
+            largeCharacter: function(bigChar) {
+                this.set('charSize', bigChar)
+                this.set('userEnergy', 30)
             },
 
             startButton: function(userNameValue) {
                 this.set('username', userNameValue)
+                this.trigger('letsGo', this)
+                this.set('rightLeftMove', 0)
+                this.set('upDownMove', 0)
+                this.set('moveCount', 0)
+                this.set('userEnergy', 20)
+                    // this.set('input', null)
+                    // this.set('username', this.get('username'.innerHtml === '')) need to clear username
             },
-            // notEnoughEnergy: function(){
-            //   if ('userEnergy' <= 0) {
-            //
-            //   }
-            // }
+            // WHY DOES THIS WORK?? IT SAVES THE OPPOSITE THINGS I PASS IN TO THE FUNCTION???
+            playAgain: function() {
+                this.save();
+                // this.set('rightLeftMove', rightLeftMove);
+                // this.set('upDownMove', upDownMove);
+                this.trigger('startOver', this);
+                // console.log('saving stats');
+
+                console.log('saved stuff');
+                // this.save(undefined, {
+                //   success: function(){
+                //     console.log(`user is ${this.get('charSize')}`);
+                //   },
+                //   error: function() {
+                //     console.log('nope, didn\'t save');
+                //   },
+                // });
+            },
 
             right: function() {
-                if (this.get('rightLeftMove') < 10) {
+                if (this.get('rightLeftMove') < 10 && this.get('charSize') === 'large') {
                     this.set('rightLeftMove', this.get('rightLeftMove') + 1)
                     this.set('moveCount', this.get('moveCount') + 1)
                     this.set('userEnergy', this.get('userEnergy') - 2)
+                } else if (this.get('charSize') === 'small' && this.get('rightLeftMove') < 10) {
+                    this.set('rightLeftMove', this.get('rightLeftMove') + 1)
+                    this.set('moveCount', this.get('moveCount') + 1)
+                    this.set('userEnergy', this.get('userEnergy') - 1)
+                }
+                if (this.get('userEnergy') <= 0) {
+                    this.trigger('gameEnded', this)
                 }
             },
 
             left: function() {
-                if (this.get('rightLeftMove') > -10) {
+                if (this.get('rightLeftMove') > -10 && this.get('charSize') === 'large') {
                     this.set('rightLeftMove', this.get('rightLeftMove') - 1)
                     this.set('moveCount', this.get('moveCount') + 1)
                     this.set('userEnergy', this.get('userEnergy') - 2)
+                } else if (this.get('charSize') === 'small' && this.get('rightLeftMove') > -10) {
+                    this.set('rightLeftMove', this.get('rightLeftMove') - 1)
+                    this.set('moveCount', this.get('moveCount') + 1)
+                    this.set('userEnergy', this.get('userEnergy') - 1)
+                }
+                if (this.get('userEnergy') <= 0) {
+                    this.trigger('gameEnded', this)
                 }
             },
 
             up: function() {
-                if (this.get('upDownMove') < 10) {
+                if (this.get('upDownMove') < 10 && this.get('charSize') === 'large') {
                     this.set('upDownMove', this.get('upDownMove') + 1)
                     this.set('moveCount', this.get('moveCount') + 1)
                     this.set('userEnergy', this.get('userEnergy') - 2)
+                } else if (this.get('charSize') === 'small' && this.get('upDownMove') < 10) {
+                    this.set('upDownMove', this.get('upDownMove') + 1)
+                    this.set('moveCount', this.get('moveCount') + 1)
+                    this.set('userEnergy', this.get('userEnergy') - 1)
+                }
+                if (this.get('userEnergy') <= 0) {
+                    this.trigger('gameEnded', this)
                 }
             },
             down: function() {
-                if (this.get('upDownMove') > -10) {
+                if (this.get('upDownMove') > -10 && this.get('charSize') === 'large') {
                     this.set('upDownMove', this.get('upDownMove') - 1)
                     this.set('moveCount', this.get('moveCount') + 1)
                     this.set('userEnergy', this.get('userEnergy') - 2)
+                } else if (this.get('charSize') === 'small' && this.get('upDownMove') > -10) {
+                    this.set('upDownMove', this.get('upDownMove') - 1)
+                    this.set('moveCount', this.get('moveCount') + 1)
+                    this.set('userEnergy', this.get('userEnergy') - 1)
+                }
+                if (this.get('userEnergy') <= 0) {
+                    this.trigger('gameEnded', this)
                 }
             },
         });
@@ -104,6 +147,7 @@
     }, {}],
     3: [function(require, module, exports) {
         let MovesModel = require('./models/movesModel');
+        // let ScoreCollection = require('./models/collection')
         let LogInView = require('./views/logInView');
         let GamePlayView = require('./views/gamePlayView');
         let GameoverView = require('./views/gameoverView');
@@ -113,15 +157,31 @@
                 // MODELS
                 let movesM = new MovesModel();
 
+                // COLLECTION
+                // let highScoreC = new ScoreCollection();
+
                 //VIEWS
                 this.logInV = new LogInView({
                     model: movesM,
                     el: document.getElementById('logIn'),
                 });
+                movesM.on('letsGo', function(model) {
+                    this.navigate('newGame', {
+                        trigger: true
+                    })
+                }, this)
+
                 this.gamePlayV = new GamePlayView({
                     model: movesM,
                     el: document.getElementById('gameField'),
                 });
+
+                movesM.on('gameEnded', function(model) {
+                    this.navigate('gameOver', {
+                        trigger: true
+                    })
+                }, this);
+
                 this.gameoverV = new GameoverView({
                     model: movesM,
                     el: document.getElementById('gameOverField')
@@ -134,6 +194,10 @@
                 '': 'logInNewGame',
             },
             logInNewGame: function() {
+                // if(who === null) {
+                //   this.navigate('logIn', {trigger:true});
+                //   return;
+                // }
                 console.log('time to log in!');
                 this.logInV.el.classList.remove('hidden');
                 this.gamePlayV.el.classList.add('hidden');
@@ -146,6 +210,16 @@
                 this.gameoverV.el.classList.add('hidden');
             },
             gameOver: function() {
+                let self = this;
+                let playerStats = new MovesModel()
+
+                playerStats.fetch({
+                    url: `http://tiny-tiny.herokuapp.com/collections/gridAdventure`,
+                    success: function() {
+                        self.gameOver.model = playerStats;
+                        // self.gameOver.render(`${'id'}`); err: not a function??
+                    },
+                });
                 console.log('start over :(');
                 this.gameoverV.el.classList.remove('hidden');
                 this.gamePlayV.el.classList.add('hidden');
