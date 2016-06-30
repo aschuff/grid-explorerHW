@@ -25,12 +25,14 @@
         'use strict';
 
         var MovesModel = require('./models/mainModel');
+        var PlayerTypeCollection = require('./models/playerTypeCollection');
         var LogInView = require('./views/logInView');
         var GamePlayView = require('./views/gamePlayView');
         var GameoverView = require('./views/gameoverView');
 
         module.exports = Backbone.Router.extend({
             initialize: function initialize() {
+                debugger;
                 // MODEL
                 var movesM = new MovesModel();
 
@@ -61,6 +63,9 @@
                     model: movesM,
                     el: document.getElementById('gameOverField')
                 });
+                debugger;
+                var collectionOfTypes = new PlayerTypeCollection();
+                collectionOfTypes.fetch(); // send types to a view after this?
             },
             routes: {
                 'logIn': 'logInNewGame',
@@ -102,9 +107,10 @@
         });
     }, {
         "./models/mainModel": 3,
-        "./views/gamePlayView": 5,
-        "./views/gameoverView": 6,
-        "./views/logInView": 7
+        "./models/playerTypeCollection": 4,
+        "./views/gamePlayView": 6,
+        "./views/gameoverView": 7,
+        "./views/logInView": 8
     }],
     2: [function(require, module, exports) {
         module.exports = Backbone.Model.extend({
@@ -220,9 +226,20 @@
 
     }, {
         "./highScoreModel": 2,
-        "./playerTypeModel": 4
+        "./playerTypeModel": 5
     }],
     4: [function(require, module, exports) {
+        let PlayerType = require('./playerTypeModel');
+
+        module.exports = Backbone.Collection.extend({
+            url: 'http://grid.queencityiron.com/api/players',
+            model: PlayerType,
+        });
+
+    }, {
+        "./playerTypeModel": 5
+    }],
+    5: [function(require, module, exports) {
         module.exports = Backbone.Model.extend({
             url: 'http://grid.queencityiron.com/api/players',
             defaults: {
@@ -232,8 +249,9 @@
             },
         });
 
+
     }, {}],
-    5: [function(require, module, exports) {
+    6: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -291,7 +309,7 @@
         });
 
     }, {}],
-    6: [function(require, module, exports) {
+    7: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -306,7 +324,7 @@
         });
 
     }, {}],
-    7: [function(require, module, exports) {
+    8: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {

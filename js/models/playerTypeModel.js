@@ -5,4 +5,5 @@ module.exports = Backbone.Model.extend({
     energyPerMove: 0,
     startingEnergy: 0
   },
-});  
+});
+ 

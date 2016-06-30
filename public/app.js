@@ -31,7 +31,7 @@
             Backbone.history.start();
         });
     }, {
-        "./router": 5
+        "./router": 6
     }],
     2: [function(require, module, exports) {
         module.exports = Backbone.Model.extend({
@@ -147,9 +147,20 @@
 
     }, {
         "./highScoreModel": 2,
-        "./playerTypeModel": 4
+        "./playerTypeModel": 5
     }],
     4: [function(require, module, exports) {
+        let PlayerType = require('./playerTypeModel');
+
+        module.exports = Backbone.Collection.extend({
+            url: 'http://grid.queencityiron.com/api/players',
+            model: PlayerType,
+        });
+
+    }, {
+        "./playerTypeModel": 5
+    }],
+    5: [function(require, module, exports) {
         module.exports = Backbone.Model.extend({
             url: 'http://grid.queencityiron.com/api/players',
             defaults: {
@@ -159,15 +170,18 @@
             },
         });
 
+
     }, {}],
-    5: [function(require, module, exports) {
+    6: [function(require, module, exports) {
         let MovesModel = require('./models/mainModel');
+        let PlayerTypeCollection = require('./models/playerTypeCollection');
         let LogInView = require('./views/logInView');
         let GamePlayView = require('./views/gamePlayView');
         let GameoverView = require('./views/gameoverView');
 
         module.exports = Backbone.Router.extend({
             initialize: function() {
+                debugger
                 // MODEL
                 let movesM = new MovesModel();
 
@@ -198,6 +212,11 @@
                     model: movesM,
                     el: document.getElementById('gameOverField')
                 });
+                debugger
+                let collectionOfTypes = new PlayerTypeCollection();
+                collectionOfTypes.fetch(); // send types to a view after this?
+
+
             },
             routes: {
                 'logIn': 'logInNewGame',
@@ -240,11 +259,12 @@
 
     }, {
         "./models/mainModel": 3,
-        "./views/gamePlayView": 6,
-        "./views/gameoverView": 7,
-        "./views/logInView": 8
+        "./models/playerTypeCollection": 4,
+        "./views/gamePlayView": 7,
+        "./views/gameoverView": 8,
+        "./views/logInView": 9
     }],
-    6: [function(require, module, exports) {
+    7: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -302,7 +322,7 @@
         });
 
     }, {}],
-    7: [function(require, module, exports) {
+    8: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -317,7 +337,7 @@
         });
 
     }, {}],
-    8: [function(require, module, exports) {
+    9: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
