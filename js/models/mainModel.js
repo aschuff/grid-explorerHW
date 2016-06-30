@@ -1,7 +1,19 @@
+let PlayerTypeCollection = require('./playerTypeCollection')
 let PlayerType  = require('./playerTypeModel');
 let HighScore = require('./highScoreModel');
 
 module.exports = Backbone.Model.extend({
+  initialize: function() {
+    let self = this;
+    self.collectionOfTypes = new PlayerTypeCollection();
+    self.collectionOfTypes.fetch({
+      success: function() {
+        console.log(self.collectionOfTypes);
+        self.collectionOfTypes.trigger('typesLoaded');
+      }
+
+    }); // send types to a view after this?
+  },
     // url: 'http://grid.queencityiron.com/api/players',
     defaults: {
         username: '',
@@ -11,6 +23,7 @@ module.exports = Backbone.Model.extend({
         rightLeftMove: 0,
         upDownMove: 0,
     },
+
     smallCharacter: function() {
         this.set('charSize', 'small')
     },

@@ -6,7 +6,6 @@ let GameoverView = require('./views/gameoverView');
 
 module.exports = Backbone.Router.extend({
     initialize: function() {
-      debugger
         // MODEL
         let movesM = new MovesModel();
 
@@ -37,11 +36,6 @@ module.exports = Backbone.Router.extend({
             model: movesM,
             el: document.getElementById('gameOverField')
         });
-debugger
-        let collectionOfTypes = new PlayerTypeCollection();
-        collectionOfTypes.fetch(); // send types to a view after this?
-
-
     },
     routes: {
         'logIn': 'logInNewGame',

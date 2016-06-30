@@ -32,7 +32,6 @@
 
         module.exports = Backbone.Router.extend({
             initialize: function initialize() {
-                debugger;
                 // MODEL
                 var movesM = new MovesModel();
 
@@ -63,9 +62,6 @@
                     model: movesM,
                     el: document.getElementById('gameOverField')
                 });
-                debugger;
-                var collectionOfTypes = new PlayerTypeCollection();
-                collectionOfTypes.fetch(); // send types to a view after this?
             },
             routes: {
                 'logIn': 'logInNewGame',
@@ -124,10 +120,22 @@
 
     }, {}],
     3: [function(require, module, exports) {
+        let PlayerTypeCollection = require('./playerTypeCollection')
         let PlayerType = require('./playerTypeModel');
         let HighScore = require('./highScoreModel');
 
         module.exports = Backbone.Model.extend({
+            initialize: function() {
+                let self = this;
+                self.collectionOfTypes = new PlayerTypeCollection();
+                self.collectionOfTypes.fetch({
+                    success: function() {
+                        console.log(self.collectionOfTypes);
+                        self.collectionOfTypes.trigger('typesLoaded');
+                    }
+
+                }); // send types to a view after this?
+            },
             // url: 'http://grid.queencityiron.com/api/players',
             defaults: {
                 username: '',
@@ -137,6 +145,7 @@
                 rightLeftMove: 0,
                 upDownMove: 0,
             },
+
             smallCharacter: function() {
                 this.set('charSize', 'small')
             },
@@ -226,14 +235,15 @@
 
     }, {
         "./highScoreModel": 2,
+        "./playerTypeCollection": 4,
         "./playerTypeModel": 5
     }],
     4: [function(require, module, exports) {
-        let PlayerType = require('./playerTypeModel');
+        let PlayerTypeModel = require('./playerTypeModel');
 
         module.exports = Backbone.Collection.extend({
             url: 'http://grid.queencityiron.com/api/players',
-            model: PlayerType,
+            model: PlayerTypeModel,
         });
 
     }, {
@@ -329,6 +339,7 @@
 
             initialize: function() {
                 this.model.on('change', this.render, this);
+                this.model.collectionOfTypes.on('typesLoaded', this.render, this);
             },
             events: {
                 'click #smallCharacter': 'smallChar',
@@ -353,6 +364,15 @@
             render: function() {
                 let newUser = this.el.querySelector('#greeting');
                 newUser.textContent = `Hello ${this.model.get('username')}!`;
+                console.log('rendered');
+
+                this.model.collectionOfTypes.forEach(function(model) {
+                    console.log(model.get('name'));
+                    let sizeButtons = document.createElement('button');
+                    let appendedContainer = document.getElementById('charChoice')
+                    sizeButtons.textContent = `${model.get('name')}`;
+                    appendedContainer.appendChild(sizeButtons);
+                })
             },
         });
 
