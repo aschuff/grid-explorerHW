@@ -24,19 +24,15 @@
     1: [function(require, module, exports) {
         'use strict';
 
-        var MovesModel = require('./models/movesModel');
-        // let ScoreCollection = require('./models/collection')
+        var MovesModel = require('./models/mainModel');
         var LogInView = require('./views/logInView');
         var GamePlayView = require('./views/gamePlayView');
         var GameoverView = require('./views/gameoverView');
 
         module.exports = Backbone.Router.extend({
             initialize: function initialize() {
-                // MODELS
+                // MODEL
                 var movesM = new MovesModel();
-
-                // COLLECTION
-                // let highScoreC = new ScoreCollection();
 
                 //VIEWS
                 this.logInV = new LogInView({
@@ -44,6 +40,7 @@
                     el: document.getElementById('logIn')
                 });
                 movesM.on('letsGo', function(model) {
+                    console.log(model);
                     this.navigate('newGame', {
                         trigger: true
                     });
@@ -88,16 +85,15 @@
                 this.gameoverV.el.classList.add('hidden');
             },
             gameOver: function gameOver() {
-                var self = this;
-                var playerStats = new MovesModel();
-
-                playerStats.fetch({
-                    url: 'http://tiny-tiny.herokuapp.com/collections/gridAdventure',
-                    success: function success() {
-                        self.gameOver.model = playerStats;
-                        // self.gameOver.render(`${'id'}`); err: not a function??
-                    }
-                });
+                // let self = this;
+                // let newHighScore = new highScoreCollection()
+                //
+                // newHighScore.fetch({
+                //     success: function() {
+                //         self.gameOver.model = newHighScore;
+                //         self.gameOver.render();
+                //     },
+                // });
                 console.log('start over :(');
                 this.gameoverV.el.classList.remove('hidden');
                 this.gamePlayV.el.classList.add('hidden');
@@ -105,16 +101,28 @@
             }
         });
     }, {
-        "./models/movesModel": 2,
-        "./views/gamePlayView": 3,
-        "./views/gameoverView": 4,
-        "./views/logInView": 5
+        "./models/mainModel": 3,
+        "./views/gamePlayView": 5,
+        "./views/gameoverView": 6,
+        "./views/logInView": 7
     }],
     2: [function(require, module, exports) {
         module.exports = Backbone.Model.extend({
-            // url: 'http://grid.queencityiron.com/api/players',
-            url: 'http://tiny-tiny.herokuapp.com/collections/gridAdventure',
+            url: 'http://grid.queencityiron.com/api/highscore',
+            defaults: {
+                username: '',
+                userEnergy: 0,
+                charSize: 0
+            },
+        });
 
+    }, {}],
+    3: [function(require, module, exports) {
+        let PlayerType = require('./playerTypeModel');
+        let HighScore = require('./highScoreModel');
+
+        module.exports = Backbone.Model.extend({
+            // url: 'http://grid.queencityiron.com/api/players',
             defaults: {
                 username: '',
                 charSize: '',
@@ -123,12 +131,12 @@
                 rightLeftMove: 0,
                 upDownMove: 0,
             },
-            smallCharacter: function(littleChar) {
-                this.set('charSize', littleChar)
+            smallCharacter: function() {
+                this.set('charSize', 'small')
             },
 
-            largeCharacter: function(bigChar) {
-                this.set('charSize', bigChar)
+            largeCharacter: function() {
+                this.set('charSize', 'large')
                 this.set('userEnergy', 30)
             },
 
@@ -138,27 +146,16 @@
                 this.set('rightLeftMove', 0)
                 this.set('upDownMove', 0)
                 this.set('moveCount', 0)
-                this.set('userEnergy', 20)
                     // this.set('input', null)
                     // this.set('username', this.get('username'.innerHtml === '')) need to clear username
             },
-            // WHY DOES THIS WORK?? IT SAVES THE OPPOSITE THINGS I PASS IN TO THE FUNCTION???
-            playAgain: function() {
-                this.save();
-                // this.set('rightLeftMove', rightLeftMove);
-                // this.set('upDownMove', upDownMove);
-                this.trigger('startOver', this);
-                // console.log('saving stats');
 
-                console.log('saved stuff');
-                // this.save(undefined, {
-                //   success: function(){
-                //     console.log(`user is ${this.get('charSize')}`);
-                //   },
-                //   error: function() {
-                //     console.log('nope, didn\'t save');
-                //   },
-                // });
+            playAgain: function() {
+                this.trigger('startOver', this);
+                this.clear({
+                    silent: true
+                });
+                this.set(this.defaults)
             },
 
             right: function() {
@@ -221,8 +218,22 @@
             },
         });
 
+    }, {
+        "./highScoreModel": 2,
+        "./playerTypeModel": 4
+    }],
+    4: [function(require, module, exports) {
+        module.exports = Backbone.Model.extend({
+            url: 'http://grid.queencityiron.com/api/players',
+            defaults: {
+                charSize: '',
+                energyPerMove: 0,
+                startingEnergy: 0
+            },
+        });
+
     }, {}],
-    3: [function(require, module, exports) {
+    5: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -244,7 +255,6 @@
             totalMoves: function() {
                 this.model.userMoves();
             },
-
             clickRight: function() {
                 this.model.right();
             },
@@ -281,7 +291,7 @@
         });
 
     }, {}],
-    4: [function(require, module, exports) {
+    6: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -296,7 +306,7 @@
         });
 
     }, {}],
-    5: [function(require, module, exports) {
+    7: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -307,16 +317,13 @@
                 'click #largeCharacter': 'largeChar',
                 'click #startButton': 'clickStart',
             },
-            // start button events
             smallChar: function() {
-                let littleChar = document.getElementById('smallCharacter').value;
                 console.log('little one');
-                this.model.smallCharacter(littleChar);
+                this.model.smallCharacter();
             },
             largeChar: function() {
-                let bigChar = document.getElementById('largeCharacter').value;
                 console.log('big one');
-                this.model.largeCharacter(bigChar);
+                this.model.largeCharacter();
             },
 
             clickStart: function() {

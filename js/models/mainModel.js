@@ -1,7 +1,8 @@
+let PlayerType  = require('./playerTypeModel');
+let HighScore = require('./highScoreModel');
+
 module.exports = Backbone.Model.extend({
     // url: 'http://grid.queencityiron.com/api/players',
-    url: 'http://tiny-tiny.herokuapp.com/collections/gridAdventure',
-
     defaults: {
         username: '',
         charSize: '',
@@ -10,12 +11,12 @@ module.exports = Backbone.Model.extend({
         rightLeftMove: 0,
         upDownMove: 0,
     },
-    smallCharacter: function(littleChar) {
-        this.set('charSize', littleChar)
+    smallCharacter: function() {
+        this.set('charSize', 'small')
     },
 
-    largeCharacter: function(bigChar) {
-        this.set('charSize', bigChar)
+    largeCharacter: function() {
+        this.set('charSize', 'large')
         this.set('userEnergy', 30)
     },
 
@@ -25,27 +26,16 @@ module.exports = Backbone.Model.extend({
         this.set('rightLeftMove', 0)
         this.set('upDownMove', 0)
         this.set('moveCount', 0)
-        this.set('userEnergy', 20)
         // this.set('input', null)
         // this.set('username', this.get('username'.innerHtml === '')) need to clear username
     },
-// WHY DOES THIS WORK?? IT SAVES THE OPPOSITE THINGS I PASS IN TO THE FUNCTION???
-    playAgain: function(){
-      this.save();
-      // this.set('rightLeftMove', rightLeftMove);
-      // this.set('upDownMove', upDownMove);
-      this.trigger('startOver', this);
-      // console.log('saving stats');
 
-      console.log('saved stuff');
-      // this.save(undefined, {
-      //   success: function(){
-      //     console.log(`user is ${this.get('charSize')}`);
-      //   },
-      //   error: function() {
-      //     console.log('nope, didn\'t save');
-      //   },
-      // });
+    playAgain: function(){
+      this.trigger('startOver', this);
+      this.clear({
+        silent: true
+      });
+      this.set(this.defaults)
     },
 
     right: function() {

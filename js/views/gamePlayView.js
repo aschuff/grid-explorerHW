@@ -19,7 +19,6 @@ module.exports = Backbone.View.extend({
     totalMoves: function() {
       this.model.userMoves();
     },
-
     clickRight: function() {
         this.model.right();
     },

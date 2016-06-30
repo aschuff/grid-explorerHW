@@ -1,78 +1,77 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>Grid Explorer!</title>
     <link rel="normalize" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css">
     <link href="https://fonts.googleapis.com/css?family=Tillana" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="main">
-      <section id="logIn">
-        <div id= "greeting"></div>
+        <section id="logIn">
+            <div id="greeting"></div>
+            <input id="input" type="text" name="login" value="" placeholder="log in">
+            <div id="charChoice">
+                <button id="smallCharacter" type="button" name="button">Small</button>
+                <button id="largeCharacter" type="button" name="button">Large</button>
+            </div>
+            <button id="startButton" type="button" name="Start">Start</button>
+            <a href="#logIn" class="hidden">LogIn</a>
+            <a href="#newGame" class="hidden">Play</a>
 
-        <div id="charChoice">
-          <h4>Small Character</h4>
-          <input id="smallCharacter" type="radio" name="small" value="small">
-          <h4>Large Character</h4>
-          <input id="largeCharacter" type="radio" name="small" value="large">
-        </div>
+        </section>
 
-        <input id="input" type="text" name="login" value="" placeholder="log in">
-        <button id="startButton" type="button" name="Start">Start</button>
-        <a href="#logIn">LogIn</a>
-        <a href="#newGame">Play</a>
+        <section id="gameField" class="hidden">
+            <h3>Let's Play!</h3>
+            <p>
+                The more moves you make, the more Energy used.
+            </p>
+            <div id="userEnergy">
+                -
+            </div>
+            <div id="userMoves">
+                -
+            </div>
+            <div id="gridArea">
 
-      </section>
+            </div>
 
-      <section id="gameField" class="hidden">
-          <h3>Let's Play!</h3>
-          <p>
-            The more moves you make, the more Energy used.
-          </p>
-        <div id="userEnergy">
-          -
-        </div>
-        <div id="userMoves">
-          -
-        </div>
-        <div id="gridArea">
+            <div id="moveOptions">
+                <button id="right" type="button" name="button">Right</button>
+                <div id="xAxis">
+                    -
+                </div>
+                <button id="left" type="button" name="button">Left</button>
+                <div id="xAxis">
+                    -
+                </div>
+                <button id="up" type="button" name="button">Up</button>
+                <div id="yAxis">
+                    -
+                </div>
+                <button id="down" type="button" name="button">Down</button>
+                <div id="yAxis">
+                    -
+                </div>
+            </div>
+        </section>
 
-        </div>
-
-        <div id="moveOptions">
-        <button id="right" type="button" name="button">Right</button>
-        <div id="xAxis">
-          -
-        </div>
-        <button id="left" type="button" name="button">Left</button>
-        <div id="xAxis">
-          -
-        </div>
-        <button id="up" type="button" name="button">Up</button>
-        <div id="yAxis">
-          -
-        </div>
-        <button id="down" type="button" name="button">Down</button>
-        <div id="yAxis">
-          -
-        </div>
-        </div>
-      </section>
-
-      <section id="gameOverField" class="hidden">
-        <div id="gameEnd">
-          <h1>Game Over!</h1>
-          <a id="playAgain" href="#"><h3>Play Again? >>></h3></a>
-        </div>
-      </section>
+        <section id="gameOverField" class="hidden">
+            <div id="gameEnd">
+                <h1>Game Over!</h1>
+                <a id="playAgain" href="#"><h3>Play Again? >>></h3></a>
+            </div>
+        </section>
 
     </div>
 
     <script src="http://underscorejs.org/underscore-min.js"></script>
-		<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-		<script src="http://backbonejs.org/backbone-min.js"></script>
-		<script src="app.js"></script>
-  </body>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="http://backbonejs.org/backbone-min.js"></script>
+    <script src="app.js"></script>
+</body>
+
 </html>

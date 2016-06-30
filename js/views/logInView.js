@@ -8,16 +8,13 @@ module.exports = Backbone.View.extend({
     'click #largeCharacter': 'largeChar',
     'click #startButton': 'clickStart',
   },
-  // start button events
   smallChar: function(){
-    let littleChar = document.getElementById('smallCharacter').value;
     console.log('little one');
-    this.model.smallCharacter(littleChar);
+    this.model.smallCharacter();
   },
   largeChar: function(){
-    let bigChar = document.getElementById('largeCharacter').value;
     console.log('big one');
-    this.model.largeCharacter(bigChar);
+    this.model.largeCharacter();
   },
 
   clickStart: function() {
