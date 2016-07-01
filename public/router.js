@@ -285,7 +285,8 @@
             },
             gridGenerator: function() {
                 let myGrid = document.getElementById('gridArea');
-                myGrid.innerHtml = '';
+                myGrid.innerHTML = '';
+                console.log(myGrid);
 
                 let size = 10;
                 for (var y = 0; y < size; y++) {
@@ -294,12 +295,13 @@
                     for (var x = 0; x < size; x++) {
                         let cell = document.createElement('div');
                         cell.classList.add('cell');
-                        // cell.innerText =
                         row.appendChild(cell);
+                        if (this.model.get('upDownMove') === y && this.model.get('rightLeftMove') === x) {
+                            cell.setAttribute('id', 'player')
+                        }
                     }
                     myGrid.appendChild(row);
                 }
-                // document.getElementById('gridArea')
             },
             totalEnergy: function() {
                 this.model.startingEnergy();
@@ -365,20 +367,15 @@
 
 
                 let renderScores = this.el.querySelector('#highScoreList')
+                let self = this;
                 this.model.collectionOfHighScores.forEach(function(model) {
                     let scoreList = document.createElement('li')
-                    scoreList.textContent = `${this.model.get('name')}`;
+                    console.log(model);
+                    scoreList.textContent = `${model.get('playerType')} ${model.get('name')} ${model.get('score')} `;
                     renderScores.appendChild(scoreList);
                 })
             },
         });
-        // this.model.collectionOfTypes.forEach(function(model) {
-        //     let sizeButtons = document.createElement('button');
-        //     sizeButtons.classList.add('playerSize')
-        //     let appendedContainer = document.getElementById('charChoice');
-        //     sizeButtons.textContent = `${model.get('name')}`;
-        //     appendedContainer.appendChild(sizeButtons);
-        // })
 
     }, {}],
     9: [function(require, module, exports) {
