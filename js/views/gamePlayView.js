@@ -5,7 +5,7 @@ module.exports = Backbone.View.extend({
     },
 
     events: {
-        'click #userEnergy': 'totalEnergy',
+        'click #startingEnergy': 'totalEnergy',
         'click #userMoves': 'totalMoves',
         'click #right': 'clickRight',
         'click #left': 'clickLeft',
@@ -13,7 +13,7 @@ module.exports = Backbone.View.extend({
         'click #down': 'clickDown',
     },
     totalEnergy: function() {
-      this.model.userEnergy();
+      this.model.startingEnergy();
     },
 
     totalMoves: function() {
@@ -33,7 +33,7 @@ module.exports = Backbone.View.extend({
     },
 
     render: function() {
-
+      console.log('rendering');
         let rightButton = this.el.querySelector('#xAxis');
         rightButton.textContent = this.model.get('rightLeftMove');
 
@@ -49,7 +49,7 @@ module.exports = Backbone.View.extend({
         let allMovesTotal = this.el.querySelector('#userMoves');
         allMovesTotal.textContent = `Total Moves: ${this.model.get('moveCount')}`;
 
-        let energyLevel = this.el.querySelector('#userEnergy');
-        energyLevel.textContent = `Total Energy: ${this.model.get('userEnergy')}`;
+        let energyLevel = this.el.querySelector('#startingEnergy');
+        energyLevel.textContent = `Total Energy: ${this.model.get('startingEnergy')}`;
     },
 });

@@ -8,5 +8,6 @@ module.exports = Backbone.View.extend({
     },
     newGame: function(){
       this.model.playAgain();
+      this.model.sendScore();
     },
   });

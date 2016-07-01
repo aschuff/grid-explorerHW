@@ -26,6 +26,7 @@
 
         var MovesModel = require('./models/mainModel');
         var PlayerTypeCollection = require('./models/playerTypeCollection');
+        var HighScoreCollection = require('./models/highScoreCollection');
         var LogInView = require('./views/logInView');
         var GamePlayView = require('./views/gamePlayView');
         var GameoverView = require('./views/gameoverView');
@@ -62,6 +63,14 @@
                     model: movesM,
                     el: document.getElementById('gameOverField')
                 });
+                // HIGH SCORE STUFF??
+                // let highscores = new highScoreCollection({
+                //   highscores.fetch({
+                //     success: function(){
+                //       console.log('got the highscores');
+                //     }
+                //   })
+                // });
             },
             routes: {
                 'logIn': 'logInNewGame',
@@ -87,10 +96,10 @@
             },
             gameOver: function gameOver() {
                 // let self = this;
-                // let newHighScore = new highScoreCollection()
-                //
-                // newHighScore.fetch({
+                // let newHighScore = new HighScoreCollection()
+                // self.newHighScore.fetch({
                 //     success: function() {
+                //       console.log(self.newHighScore);
                 //         self.gameOver.model = newHighScore;
                 //         self.gameOver.render();
                 //     },
@@ -102,25 +111,49 @@
             }
         });
     }, {
-        "./models/mainModel": 3,
-        "./models/playerTypeCollection": 4,
-        "./views/gamePlayView": 6,
-        "./views/gameoverView": 7,
-        "./views/logInView": 8
+        "./models/highScoreCollection": 2,
+        "./models/mainModel": 4,
+        "./models/playerTypeCollection": 5,
+        "./views/gamePlayView": 7,
+        "./views/gameoverView": 8,
+        "./views/logInView": 9
     }],
     2: [function(require, module, exports) {
+        let HighScoreModel = require('./highScoreModel');
+
+        module.exports = Backbone.Collection.extend({
+            initialize: function() {
+                let highScoreC = new HighScoreCollection()
+                let self2 = this;
+                self2.highScoreC.fetch({
+                    success: function() {
+                        console.log((self2.highScoreC));
+                        self2.highScoreC.model = highScoreC;
+                        self2.highScoreC.render(highScoreC);
+                    }
+                });
+            },
+            url: 'http://grid.queencityiron.com/api/highscore',
+            model: HighScoreModel,
+        });
+
+    }, {
+        "./highScoreModel": 3
+    }],
+    3: [function(require, module, exports) {
         module.exports = Backbone.Model.extend({
             url: 'http://grid.queencityiron.com/api/highscore',
             defaults: {
                 username: '',
-                userEnergy: 0,
-                charSize: 0
+                startingEnergy: 0,
+                name: '',
             },
         });
 
     }, {}],
-    3: [function(require, module, exports) {
-        let PlayerTypeCollection = require('./playerTypeCollection')
+    4: [function(require, module, exports) {
+        let PlayerTypeCollection = require('./playerTypeCollection');
+        let HighScoreCollection = require('./highScoreCollection');
         let PlayerType = require('./playerTypeModel');
         let HighScore = require('./highScoreModel');
 
@@ -133,28 +166,33 @@
                         console.log(self.collectionOfTypes);
                         self.collectionOfTypes.trigger('typesLoaded');
                     }
-
                 }); // send types to a view after this?
+                let newHighScore = new HighScore({
+                    username: this.get('username'),
+                    name: this.get('name'),
+                    score: this.get('moveCount'),
+                });
+                newHighScore.save();
             },
             // url: 'http://grid.queencityiron.com/api/players',
             defaults: {
                 username: '',
-                charSize: '',
-                userEnergy: 20,
+                name: '',
+                startingEnergy: 20,
                 moveCount: 0,
+                energyPerMove: 0,
                 rightLeftMove: 0,
                 upDownMove: 0,
             },
-
-            smallCharacter: function() {
-                this.set('charSize', 'small')
+            setPlayerType: function(type) {
+                let target = this.collectionOfTypes.find(function(collectionOfTypes) {
+                    return collectionOfTypes.get('name') === type;
+                });
+                this.set('name', type)
+                this.set('startingEnergy', target.get('startingEnergy'));
+                this.set('energyPerMove', target.get('energyPerMove'));
+                console.log('setting player type');
             },
-
-            largeCharacter: function() {
-                this.set('charSize', 'large')
-                this.set('userEnergy', 30)
-            },
-
             startButton: function(userNameValue) {
                 this.set('username', userNameValue)
                 this.trigger('letsGo', this)
@@ -164,7 +202,12 @@
                     // this.set('input', null)
                     // this.set('username', this.get('username'.innerHtml === '')) need to clear username
             },
-
+            sendScore: function() {
+                this.model.get('username');
+                this.model.get('name');
+                this.model.get('moveCount');
+                this.save();
+            },
             playAgain: function() {
                 this.trigger('startOver', this);
                 this.clear({
@@ -172,73 +215,55 @@
                 });
                 this.set(this.defaults)
             },
-
             right: function() {
-                if (this.get('rightLeftMove') < 10 && this.get('charSize') === 'large') {
+                if (this.get('rightLeftMove') < 10) {
                     this.set('rightLeftMove', this.get('rightLeftMove') + 1)
                     this.set('moveCount', this.get('moveCount') + 1)
-                    this.set('userEnergy', this.get('userEnergy') - 2)
-                } else if (this.get('charSize') === 'small' && this.get('rightLeftMove') < 10) {
-                    this.set('rightLeftMove', this.get('rightLeftMove') + 1)
-                    this.set('moveCount', this.get('moveCount') + 1)
-                    this.set('userEnergy', this.get('userEnergy') - 1)
+                    this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
                 }
-                if (this.get('userEnergy') <= 0) {
+                if (this.get('startingEnergy') <= 0) {
                     this.trigger('gameEnded', this)
                 }
             },
-
             left: function() {
-                if (this.get('rightLeftMove') > -10 && this.get('charSize') === 'large') {
+                if (this.get('rightLeftMove') > -10) {
                     this.set('rightLeftMove', this.get('rightLeftMove') - 1)
                     this.set('moveCount', this.get('moveCount') + 1)
-                    this.set('userEnergy', this.get('userEnergy') - 2)
-                } else if (this.get('charSize') === 'small' && this.get('rightLeftMove') > -10) {
-                    this.set('rightLeftMove', this.get('rightLeftMove') - 1)
-                    this.set('moveCount', this.get('moveCount') + 1)
-                    this.set('userEnergy', this.get('userEnergy') - 1)
+                    this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
                 }
-                if (this.get('userEnergy') <= 0) {
+                if (this.get('startingEnergy') <= 0) {
                     this.trigger('gameEnded', this)
                 }
             },
-
             up: function() {
-                if (this.get('upDownMove') < 10 && this.get('charSize') === 'large') {
+                if (this.get('upDownMove') < 10) {
                     this.set('upDownMove', this.get('upDownMove') + 1)
                     this.set('moveCount', this.get('moveCount') + 1)
-                    this.set('userEnergy', this.get('userEnergy') - 2)
-                } else if (this.get('charSize') === 'small' && this.get('upDownMove') < 10) {
-                    this.set('upDownMove', this.get('upDownMove') + 1)
-                    this.set('moveCount', this.get('moveCount') + 1)
-                    this.set('userEnergy', this.get('userEnergy') - 1)
+                    this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
                 }
-                if (this.get('userEnergy') <= 0) {
+                if (this.get('startingEnergy') <= 0) {
                     this.trigger('gameEnded', this)
                 }
             },
             down: function() {
-                if (this.get('upDownMove') > -10 && this.get('charSize') === 'large') {
+                if (this.get('upDownMove') > -10) {
                     this.set('upDownMove', this.get('upDownMove') - 1)
                     this.set('moveCount', this.get('moveCount') + 1)
-                    this.set('userEnergy', this.get('userEnergy') - 2)
-                } else if (this.get('charSize') === 'small' && this.get('upDownMove') > -10) {
-                    this.set('upDownMove', this.get('upDownMove') - 1)
-                    this.set('moveCount', this.get('moveCount') + 1)
-                    this.set('userEnergy', this.get('userEnergy') - 1)
+                    this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
                 }
-                if (this.get('userEnergy') <= 0) {
+                if (this.get('startingEnergy') <= 0) {
                     this.trigger('gameEnded', this)
                 }
             },
         });
 
     }, {
-        "./highScoreModel": 2,
-        "./playerTypeCollection": 4,
-        "./playerTypeModel": 5
+        "./highScoreCollection": 2,
+        "./highScoreModel": 3,
+        "./playerTypeCollection": 5,
+        "./playerTypeModel": 6
     }],
-    4: [function(require, module, exports) {
+    5: [function(require, module, exports) {
         let PlayerTypeModel = require('./playerTypeModel');
 
         module.exports = Backbone.Collection.extend({
@@ -247,13 +272,13 @@
         });
 
     }, {
-        "./playerTypeModel": 5
+        "./playerTypeModel": 6
     }],
-    5: [function(require, module, exports) {
+    6: [function(require, module, exports) {
         module.exports = Backbone.Model.extend({
             url: 'http://grid.queencityiron.com/api/players',
             defaults: {
-                charSize: '',
+                name: '',
                 energyPerMove: 0,
                 startingEnergy: 0
             },
@@ -261,7 +286,7 @@
 
 
     }, {}],
-    6: [function(require, module, exports) {
+    7: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -269,7 +294,7 @@
             },
 
             events: {
-                'click #userEnergy': 'totalEnergy',
+                'click #startingEnergy': 'totalEnergy',
                 'click #userMoves': 'totalMoves',
                 'click #right': 'clickRight',
                 'click #left': 'clickLeft',
@@ -277,7 +302,7 @@
                 'click #down': 'clickDown',
             },
             totalEnergy: function() {
-                this.model.userEnergy();
+                this.model.startingEnergy();
             },
 
             totalMoves: function() {
@@ -297,7 +322,7 @@
             },
 
             render: function() {
-
+                console.log('rendering');
                 let rightButton = this.el.querySelector('#xAxis');
                 rightButton.textContent = this.model.get('rightLeftMove');
 
@@ -313,13 +338,13 @@
                 let allMovesTotal = this.el.querySelector('#userMoves');
                 allMovesTotal.textContent = `Total Moves: ${this.model.get('moveCount')}`;
 
-                let energyLevel = this.el.querySelector('#userEnergy');
-                energyLevel.textContent = `Total Energy: ${this.model.get('userEnergy')}`;
+                let energyLevel = this.el.querySelector('#startingEnergy');
+                energyLevel.textContent = `Total Energy: ${this.model.get('startingEnergy')}`;
             },
         });
 
     }, {}],
-    7: [function(require, module, exports) {
+    8: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -330,11 +355,12 @@
             },
             newGame: function() {
                 this.model.playAgain();
+                this.model.sendScore();
             },
         });
 
     }, {}],
-    8: [function(require, module, exports) {
+    9: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
@@ -342,17 +368,23 @@
                 this.model.collectionOfTypes.on('typesLoaded', this.render, this);
             },
             events: {
-                'click #smallCharacter': 'smallChar',
-                'click #largeCharacter': 'largeChar',
+                // 'click #smallCharacter': 'smallChar',
+                // 'click #largeCharacter': 'largeChar',
+                'click .playerSize': 'clickCharButton',
                 'click #startButton': 'clickStart',
             },
-            smallChar: function() {
-                console.log('little one');
-                this.model.smallCharacter();
-            },
-            largeChar: function() {
-                console.log('big one');
-                this.model.largeCharacter();
+            // smallChar: function(){
+            //   console.log('little one');
+            //   this.model.smallCharacter();
+            // },
+            // largeChar: function(){
+            //   console.log('big one');
+            //   this.model.largeCharacter();
+            // },
+            clickCharButton: function(event) {
+                let character = event.target.textContent;
+                this.model.setPlayerType(character);
+                // this.trigger('')
             },
 
             clickStart: function() {
@@ -364,13 +396,16 @@
             render: function() {
                 let newUser = this.el.querySelector('#greeting');
                 newUser.textContent = `Hello ${this.model.get('username')}!`;
-                console.log('rendered');
+                // console.log('rendered');
 
                 this.model.collectionOfTypes.forEach(function(model) {
-                    console.log(model.get('name'));
+                    // console.log(model.get('name'));/
                     let sizeButtons = document.createElement('button');
-                    let appendedContainer = document.getElementById('charChoice')
+                    sizeButtons.classList.add('playerSize')
+                    let appendedContainer = document.getElementById('charChoice');
                     sizeButtons.textContent = `${model.get('name')}`;
+                    // appendedContainer.innerHtml = ''; need to get duplicated buttons to stop
+                    // sizeButtons.innerHtml = '';
                     appendedContainer.appendChild(sizeButtons);
                 })
             },

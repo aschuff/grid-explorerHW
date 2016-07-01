@@ -1,5 +1,6 @@
 let MovesModel = require('./models/mainModel');
 let PlayerTypeCollection = require('./models/playerTypeCollection');
+let HighScoreCollection = require('./models/highScoreCollection');
 let LogInView = require('./views/logInView');
 let GamePlayView = require('./views/gamePlayView');
 let GameoverView = require('./views/gameoverView');
@@ -36,6 +37,14 @@ module.exports = Backbone.Router.extend({
             model: movesM,
             el: document.getElementById('gameOverField')
         });
+        // HIGH SCORE STUFF??
+        // let highscores = new highScoreCollection({
+        //   highscores.fetch({
+        //     success: function(){
+        //       console.log('got the highscores');
+        //     }
+        //   })
+        // });
     },
     routes: {
         'logIn': 'logInNewGame',
@@ -61,10 +70,10 @@ module.exports = Backbone.Router.extend({
     },
     gameOver: function() {
         // let self = this;
-        // let newHighScore = new highScoreCollection()
-        //
-        // newHighScore.fetch({
+        // let newHighScore = new HighScoreCollection()
+        // self.newHighScore.fetch({
         //     success: function() {
+        //       console.log(self.newHighScore);
         //         self.gameOver.model = newHighScore;
         //         self.gameOver.render();
         //     },

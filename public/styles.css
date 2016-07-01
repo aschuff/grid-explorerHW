@@ -39,7 +39,7 @@ div {
   background-color: cornflowerblue;
   color: #FFF; }
 
-#userEnergy, #userMoves {
+#startingEnergy, #userMoves {
   float: right;
   width: 13%;
   height: 3em;

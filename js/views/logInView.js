@@ -5,17 +5,23 @@ module.exports = Backbone.View.extend({
     this.model.collectionOfTypes.on('typesLoaded', this.render, this);
   },
   events: {
-    'click #smallCharacter': 'smallChar',
-    'click #largeCharacter': 'largeChar',
+    // 'click #smallCharacter': 'smallChar',
+    // 'click #largeCharacter': 'largeChar',
+    'click .playerSize': 'clickCharButton',
     'click #startButton': 'clickStart',
   },
-  smallChar: function(){
-    console.log('little one');
-    this.model.smallCharacter();
-  },
-  largeChar: function(){
-    console.log('big one');
-    this.model.largeCharacter();
+  // smallChar: function(){
+  //   console.log('little one');
+  //   this.model.smallCharacter();
+  // },
+  // largeChar: function(){
+  //   console.log('big one');
+  //   this.model.largeCharacter();
+  // },
+  clickCharButton: function(event) {
+    let character = event.target.textContent;
+    this.model.setPlayerType(character);
+    // this.trigger('')
   },
 
   clickStart: function() {
@@ -27,13 +33,16 @@ module.exports = Backbone.View.extend({
   render: function() {
     let newUser = this.el.querySelector('#greeting');
       newUser.textContent = `Hello ${this.model.get('username')}!`;
-      console.log('rendered');
+      // console.log('rendered');
 
       this.model.collectionOfTypes.forEach(function(model){
-        console.log(model.get('name'));
+        // console.log(model.get('name'));/
         let sizeButtons = document.createElement('button');
-        let appendedContainer = document.getElementById('charChoice')
+        sizeButtons.classList.add('playerSize')
+        let appendedContainer = document.getElementById('charChoice');
         sizeButtons.textContent = `${model.get('name')}`;
+        // appendedContainer.innerHtml = ''; need to get duplicated buttons to stop
+        // sizeButtons.innerHtml = '';
         appendedContainer.appendChild(sizeButtons);
       })
   },
