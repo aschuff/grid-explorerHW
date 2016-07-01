@@ -37,17 +37,6 @@
         let HighScoreModel = require('./highScoreModel');
 
         module.exports = Backbone.Collection.extend({
-            initialize: function() {
-                let highScoreC = new HighScoreCollection()
-                let self2 = this;
-                self2.highScoreC.fetch({
-                    success: function() {
-                        console.log((self2.highScoreC));
-                        self2.highScoreC.model = highScoreC;
-                        self2.highScoreC.render(highScoreC);
-                    }
-                });
-            },
             url: 'http://grid.queencityiron.com/api/highscore',
             model: HighScoreModel,
         });
@@ -82,19 +71,20 @@
                         self.collectionOfTypes.trigger('typesLoaded');
                     }
                 }); // send types to a view after this?
-                let newHighScore = new HighScore({
-                    username: this.get('username'),
-                    name: this.get('name'),
-                    score: this.get('moveCount'),
+                self.collectionOfHighScores = new HighScoreCollection();
+                self.collectionOfHighScores.fetch({
+                    success: function() {
+                        console.log(self.collectionOfHighScores);
+                        self.collectionOfHighScores.trigger('scoresLoaded');
+                    }
                 });
-                newHighScore.save();
             },
             // url: 'http://grid.queencityiron.com/api/players',
             defaults: {
                 username: '',
                 name: '',
                 startingEnergy: 20,
-                moveCount: 0,
+                score: 0,
                 energyPerMove: 0,
                 rightLeftMove: 0,
                 upDownMove: 0,
@@ -113,14 +103,14 @@
                 this.trigger('letsGo', this)
                 this.set('rightLeftMove', 0)
                 this.set('upDownMove', 0)
-                this.set('moveCount', 0)
+                this.set('score', 0)
                     // this.set('input', null)
                     // this.set('username', this.get('username'.innerHtml === '')) need to clear username
             },
             sendScore: function() {
-                this.model.get('username');
-                this.model.get('name');
-                this.model.get('moveCount');
+                this.get('username')
+                this.get('name')
+                this.get('score')
                 this.save();
             },
             playAgain: function() {
@@ -133,7 +123,7 @@
             right: function() {
                 if (this.get('rightLeftMove') < 10) {
                     this.set('rightLeftMove', this.get('rightLeftMove') + 1)
-                    this.set('moveCount', this.get('moveCount') + 1)
+                    this.set('score', this.get('score') + 1)
                     this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
                 }
                 if (this.get('startingEnergy') <= 0) {
@@ -143,7 +133,7 @@
             left: function() {
                 if (this.get('rightLeftMove') > -10) {
                     this.set('rightLeftMove', this.get('rightLeftMove') - 1)
-                    this.set('moveCount', this.get('moveCount') + 1)
+                    this.set('score', this.get('score') + 1)
                     this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
                 }
                 if (this.get('startingEnergy') <= 0) {
@@ -153,7 +143,7 @@
             up: function() {
                 if (this.get('upDownMove') < 10) {
                     this.set('upDownMove', this.get('upDownMove') + 1)
-                    this.set('moveCount', this.get('moveCount') + 1)
+                    this.set('score', this.get('score') + 1)
                     this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
                 }
                 if (this.get('startingEnergy') <= 0) {
@@ -163,7 +153,7 @@
             down: function() {
                 if (this.get('upDownMove') > -10) {
                     this.set('upDownMove', this.get('upDownMove') - 1)
-                    this.set('moveCount', this.get('moveCount') + 1)
+                    this.set('score', this.get('score') + 1)
                     this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
                 }
                 if (this.get('startingEnergy') <= 0) {
@@ -241,14 +231,6 @@
                     model: movesM,
                     el: document.getElementById('gameOverField')
                 });
-                // HIGH SCORE STUFF??
-                // let highscores = new highScoreCollection({
-                //   highscores.fetch({
-                //     success: function(){
-                //       console.log('got the highscores');
-                //     }
-                //   })
-                // });
             },
             routes: {
                 'logIn': 'logInNewGame',
@@ -312,10 +294,27 @@
                 'click #up': 'clickUp',
                 'click #down': 'clickDown',
             },
+            gridGenerator: function() {
+                let myGrid = document.getElementById('gridArea');
+                myGrid.innerHtml = '';
+
+                let size = 10;
+                for (var y = 0; y < size; y++) {
+                    let row = document.createElement('div');
+                    row.classList.add('row');
+                    for (var x = 0; x < size; x++) {
+                        let cell = document.createElement('div');
+                        cell.classList.add('cell');
+                        // cell.innerText =
+                        row.appendChild(cell);
+                    }
+                    myGrid.appendChild(row);
+                }
+                // document.getElementById('gridArea')
+            },
             totalEnergy: function() {
                 this.model.startingEnergy();
             },
-
             totalMoves: function() {
                 this.model.userMoves();
             },
@@ -333,7 +332,6 @@
             },
 
             render: function() {
-                console.log('rendering');
                 let rightButton = this.el.querySelector('#xAxis');
                 rightButton.textContent = this.model.get('rightLeftMove');
 
@@ -347,10 +345,13 @@
                 downButton.textContent = this.model.get('upDownMove');
 
                 let allMovesTotal = this.el.querySelector('#userMoves');
-                allMovesTotal.textContent = `Total Moves: ${this.model.get('moveCount')}`;
+                allMovesTotal.textContent = `Total Moves: ${this.model.get('score')}`;
 
                 let energyLevel = this.el.querySelector('#startingEnergy');
                 energyLevel.textContent = `Total Energy: ${this.model.get('startingEnergy')}`;
+
+                // Grid
+                this.gridGenerator();
             },
         });
 
@@ -359,7 +360,7 @@
         module.exports = Backbone.View.extend({
 
             initialize: function() {
-                this.model.on('change', this.render, this);
+                this.model.collectionOfHighScores.on('scoresLoaded', this.render, this);
             },
             events: {
                 'click #playAgain': 'newGame',
@@ -368,55 +369,59 @@
                 this.model.playAgain();
                 this.model.sendScore();
             },
+            render: function() {
+                let finalScore = this.el.querySelector('#scoreBoard')
+                finalScore.textContent = `You lost ${this.model.get('username')}
+        Final score: ${this.model.get('score')}`;
+
+
+                let renderScores = this.el.querySelector('#highScoreList')
+                this.model.collectionOfHighScores.forEach(function(model) {
+                    let scoreList = document.createElement('li')
+                    scoreList.textContent = `${this.model.get('name')}`;
+                    renderScores.appendChild(scoreList);
+                })
+            },
         });
+        // this.model.collectionOfTypes.forEach(function(model) {
+        //     let sizeButtons = document.createElement('button');
+        //     sizeButtons.classList.add('playerSize')
+        //     let appendedContainer = document.getElementById('charChoice');
+        //     sizeButtons.textContent = `${model.get('name')}`;
+        //     appendedContainer.appendChild(sizeButtons);
+        // })
 
     }, {}],
     10: [function(require, module, exports) {
         module.exports = Backbone.View.extend({
 
             initialize: function() {
-                this.model.on('change', this.render, this);
+                // this.model.on('change', this.render, this);
                 this.model.collectionOfTypes.on('typesLoaded', this.render, this);
             },
             events: {
-                // 'click #smallCharacter': 'smallChar',
-                // 'click #largeCharacter': 'largeChar',
                 'click .playerSize': 'clickCharButton',
                 'click #startButton': 'clickStart',
             },
-            // smallChar: function(){
-            //   console.log('little one');
-            //   this.model.smallCharacter();
-            // },
-            // largeChar: function(){
-            //   console.log('big one');
-            //   this.model.largeCharacter();
-            // },
             clickCharButton: function(event) {
                 let character = event.target.textContent;
                 this.model.setPlayerType(character);
                 // this.trigger('')
             },
-
             clickStart: function() {
                 let userNameValue = document.getElementById('input').value;
                 console.log(userNameValue);
                 this.model.startButton(userNameValue);
             },
-
             render: function() {
                 let newUser = this.el.querySelector('#greeting');
                 newUser.textContent = `Hello ${this.model.get('username')}!`;
-                // console.log('rendered');
-
+                // Generating size buttons on load of the page
                 this.model.collectionOfTypes.forEach(function(model) {
-                    // console.log(model.get('name'));/
                     let sizeButtons = document.createElement('button');
                     sizeButtons.classList.add('playerSize')
                     let appendedContainer = document.getElementById('charChoice');
                     sizeButtons.textContent = `${model.get('name')}`;
-                    // appendedContainer.innerHtml = ''; need to get duplicated buttons to stop
-                    // sizeButtons.innerHtml = '';
                     appendedContainer.appendChild(sizeButtons);
                 })
             },

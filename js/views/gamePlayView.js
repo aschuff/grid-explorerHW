@@ -12,10 +12,27 @@ module.exports = Backbone.View.extend({
         'click #up': 'clickUp',
         'click #down': 'clickDown',
     },
+    gridGenerator: function(){
+      let myGrid = document.getElementById('gridArea');
+      myGrid.innerHtml = '';
+
+      let size = 10;
+      for (var y = 0; y < size; y++) {
+        let row = document.createElement('div');
+        row.classList.add('row');
+          for (var x = 0; x < size; x++) {
+            let cell = document.createElement('div');
+            cell.classList.add('cell');
+            // cell.innerText =
+            row.appendChild(cell);
+          }
+          myGrid.appendChild(row);
+        }
+        // document.getElementById('gridArea')
+    },
     totalEnergy: function() {
       this.model.startingEnergy();
     },
-
     totalMoves: function() {
       this.model.userMoves();
     },
@@ -33,7 +50,6 @@ module.exports = Backbone.View.extend({
     },
 
     render: function() {
-      console.log('rendering');
         let rightButton = this.el.querySelector('#xAxis');
         rightButton.textContent = this.model.get('rightLeftMove');
 
@@ -47,9 +63,12 @@ module.exports = Backbone.View.extend({
         downButton.textContent = this.model.get('upDownMove');
 
         let allMovesTotal = this.el.querySelector('#userMoves');
-        allMovesTotal.textContent = `Total Moves: ${this.model.get('moveCount')}`;
+        allMovesTotal.textContent = `Total Moves: ${this.model.get('score')}`;
 
         let energyLevel = this.el.querySelector('#startingEnergy');
         energyLevel.textContent = `Total Energy: ${this.model.get('startingEnergy')}`;
+
+        // Grid
+        this.gridGenerator();
     },
 });

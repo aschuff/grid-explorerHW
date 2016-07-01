@@ -13,19 +13,20 @@ module.exports = Backbone.Model.extend({
                 self.collectionOfTypes.trigger('typesLoaded');
             }
         }); // send types to a view after this?
-        let newHighScore = new HighScore({
-          username: this.get('username'),
-          name: this.get('name'),
-          score: this.get('moveCount'),
+        self.collectionOfHighScores = new HighScoreCollection();
+        self.collectionOfHighScores.fetch({
+          success:function(){
+            console.log(self.collectionOfHighScores);
+            self.collectionOfHighScores.trigger('scoresLoaded');
+          }
         });
-        newHighScore.save();
     },
     // url: 'http://grid.queencityiron.com/api/players',
     defaults: {
         username: '',
         name: '',
         startingEnergy: 20,
-        moveCount: 0,
+        score: 0,
         energyPerMove: 0,
         rightLeftMove: 0,
         upDownMove: 0,
@@ -44,14 +45,14 @@ module.exports = Backbone.Model.extend({
         this.trigger('letsGo', this)
         this.set('rightLeftMove', 0)
         this.set('upDownMove', 0)
-        this.set('moveCount', 0)
+        this.set('score', 0)
             // this.set('input', null)
             // this.set('username', this.get('username'.innerHtml === '')) need to clear username
     },
     sendScore: function() {
-      this..get('username');
-      this..get('name');
-      this..get('moveCount');
+      this.get('username')
+      this.get('name')
+      this.get('score')
       this.save();
     },
     playAgain: function() {
@@ -64,7 +65,7 @@ module.exports = Backbone.Model.extend({
     right: function() {
         if (this.get('rightLeftMove') < 10) {
             this.set('rightLeftMove', this.get('rightLeftMove') + 1)
-            this.set('moveCount', this.get('moveCount') + 1)
+            this.set('score', this.get('score') + 1)
             this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
         }
         if (this.get('startingEnergy') <= 0) {
@@ -74,7 +75,7 @@ module.exports = Backbone.Model.extend({
     left: function() {
         if (this.get('rightLeftMove') > -10) {
             this.set('rightLeftMove', this.get('rightLeftMove') - 1)
-            this.set('moveCount', this.get('moveCount') + 1)
+            this.set('score', this.get('score') + 1)
             this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
         }
         if (this.get('startingEnergy') <= 0) {
@@ -84,7 +85,7 @@ module.exports = Backbone.Model.extend({
     up: function() {
         if (this.get('upDownMove') < 10) {
             this.set('upDownMove', this.get('upDownMove') + 1)
-            this.set('moveCount', this.get('moveCount') + 1)
+            this.set('score', this.get('score') + 1)
             this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
         }
         if (this.get('startingEnergy') <= 0) {
@@ -94,7 +95,7 @@ module.exports = Backbone.Model.extend({
     down: function() {
         if (this.get('upDownMove') > -10) {
             this.set('upDownMove', this.get('upDownMove') - 1)
-            this.set('moveCount', this.get('moveCount') + 1)
+            this.set('score', this.get('score') + 1)
             this.set('startingEnergy', this.get('startingEnergy') - this.get('energyPerMove'))
         }
         if (this.get('startingEnergy') <= 0) {

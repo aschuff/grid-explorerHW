@@ -24,6 +24,11 @@
     padding: 1%;
     background-color: navy;
 }
+.row, .cell {
+  width: 2em;
+  line-height: 0;
+  border: solid #FFF 2px;
+}
 #moveOptions {
     display: -webkit-box;
     height: 3em;

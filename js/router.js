@@ -37,14 +37,6 @@ module.exports = Backbone.Router.extend({
             model: movesM,
             el: document.getElementById('gameOverField')
         });
-        // HIGH SCORE STUFF??
-        // let highscores = new highScoreCollection({
-        //   highscores.fetch({
-        //     success: function(){
-        //       console.log('got the highscores');
-        //     }
-        //   })
-        // });
     },
     routes: {
         'logIn': 'logInNewGame',
