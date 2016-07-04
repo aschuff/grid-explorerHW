@@ -52,6 +52,9 @@ clickDown: function() {
 },
 
 render: function() {
+    let playerInfo = this.el.querySelector('#playerInfo');
+    playerInfo.textContent = `Username: ${this.model.get('username')}  Character: ${this.model.get('name')}`
+
     let rightButton = this.el.querySelector('#xAxis');
     rightButton.textContent = this.model.get('rightLeftMove');
 
@@ -65,10 +68,10 @@ render: function() {
     downButton.textContent = this.model.get('upDownMove');
 
     let allMovesTotal = this.el.querySelector('#userMoves');
-    allMovesTotal.textContent = `Total Moves: ${this.model.get('score')}`;
+    allMovesTotal.textContent = `Total Moves ${this.model.get('score')}`;
 
     let energyLevel = this.el.querySelector('#startingEnergy');
-    energyLevel.textContent = `Total Energy: ${this.model.get('startingEnergy')}`;
+    energyLevel.textContent = `Total Energy ${this.model.get('startingEnergy')}`;
 
     // Grid
     this.gridGenerator();

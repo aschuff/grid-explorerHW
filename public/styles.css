@@ -2,58 +2,71 @@
   font-family: 'Tillana', cursive; }
 
 body {
-  background-image: url("http://cdn.grid.fotosearch.com/CSP/CSP992/k14535246.jpg");
-  background-size: inherit; }
+  background-color: #6A8347; }
 
 .main {
-  width: 100%;
-  height: 100%; }
+  width: 80%;
+  height: 100%;
+  margin: 2% 0 2% 3%; }
 
 .hidden {
   display: none; }
 
 #logIn {
-  border: navy solid 2px;
-  width: 30%;
-  height: 16em;
+  border: #FEFCD7 solid 7px;
   text-align: center;
   padding: 1%;
-  background-color: cornflowerblue;
-  color: #FFF; }
+  background-color: #A6CB45;
+  color: #FEFCD7;
+  width: 95%;
+  height: 25em;
+  margin: 0 9%; }
+
+input {
+  border: #6A8347 solid 3px;
+  text-align: center; }
 
 button {
-  margin: 2%; }
-
-div {
-  margin: 2%; }
+  margin: 1%;
+  border: #6A8347 solid 3px;
+  background-color: #FEFCD7;
+  color: #6A8347;
+  width: 12em; }
 
 #greeting {
   font-size: medium; }
 
+#startButton {
+  width: 12em; }
+
 #gameField {
-  width: 80%;
-  height: 25em;
+  width: 95%;
+  height: 43em;
+  border: #FEFCD7 solid 7px;
+  text-align: center;
   padding: 1%;
-  border: dotted #3CC9BB;
-  margin-top: 2%;
-  background-color: cornflowerblue;
-  color: #FFF; }
+  background-color: #A6CB45;
+  color: #FEFCD7;
+  padding: 3%;
+  margin: 0 5%; }
 
 #startingEnergy, #userMoves {
   float: right;
-  width: 13%;
+  width: 11%;
   height: 3em;
-  background-color: navy;
+  background-color: #6A8347;
+  border: #FEFCD7 solid 3px;
   padding: 0;
   margin: 1%;
   color: #FFF; }
 
 #gridArea {
-  margin: 0 auto;
-  width: 35%;
-  height: 11em;
+  margin: 3% 26%;
+  width: 40%;
+  height: 22em;
   padding: 1%;
-  background-color: navy; }
+  background-color: #6A8347;
+  border: #FEFCD7 solid 7px; }
 
 .row {
   line-height: 0;
@@ -64,33 +77,40 @@ div {
   margin: 0;
   width: 30px;
   height: 30px;
-  border: solid #FFF 2px; }
+  border: solid #71B238 2px; }
 
 #player {
-  background-color: gray; }
+  background-color: #FEFCD7; }
 
 #moveOptions {
-  display: -webkit-box;
-  height: 3em; }
+  display: flex;
+  height: 3em;
+  margin-top: 3%;
+  margin-left: 12%; }
 
 #xAxis, #yAxis {
-  background-color: navy;
-  width: 10%;
+  background-color: #6A8347;
+  border: #FEFCD7 solid 2px;
+  width: 3%;
   height: 2em;
-  color: #FFF; }
+  color: #FFF;
+  margin: 1%; }
 
-button {
-  border: navy solid 2px; }
+h1 {
+  font-size: xx-large; }
+
+p {
+  font-size: large; }
 
 #gameOverField {
-  width: 25%;
-  height: 20em;
-  padding: 1%;
-  border: dotted #3CC9BB;
-  margin-top: 2%;
-  margin-left: 3%;
-  background-color: cornflowerblue;
-  color: #FFF; }
+  border: #FEFCD7 solid 7px;
+  text-align: center;
+  background-color: #A6CB45;
+  color: #FEFCD7;
+  padding: 3%;
+  width: 95%;
+  margin-left: 8%;
+  height: 25em; }
 
 #gameEnd {
   text-align: center;
@@ -99,4 +119,4 @@ button {
 a {
   cursor: pointer;
   text-decoration: underline;
-  color: navy; }
+  color: #6A8347; }

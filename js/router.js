@@ -45,10 +45,6 @@ module.exports = Backbone.Router.extend({
         '': 'logInNewGame',
     },
     logInNewGame: function() {
-        // if(who === null) {
-        //   this.navigate('logIn', {trigger:true});
-        //   return;
-        // }
         console.log('time to log in!');
         this.logInV.el.classList.remove('hidden');
         this.gamePlayV.el.classList.add('hidden');
@@ -61,15 +57,6 @@ module.exports = Backbone.Router.extend({
         this.gameoverV.el.classList.add('hidden');
     },
     gameOver: function() {
-        // let self = this;
-        // let newHighScore = new HighScoreCollection()
-        // self.newHighScore.fetch({
-        //     success: function() {
-        //       console.log(self.newHighScore);
-        //         self.gameOver.model = newHighScore;
-        //         self.gameOver.render();
-        //     },
-        // });
         console.log('start over :(');
         this.gameoverV.el.classList.remove('hidden');
         this.gamePlayV.el.classList.add('hidden');

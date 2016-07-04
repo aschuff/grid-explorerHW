@@ -20,7 +20,7 @@ module.exports = Backbone.View.extend({
     },
     render: function() {
         let newUser = this.el.querySelector('#greeting');
-        newUser.textContent = `Hello ${this.model.get('username')}!`;
+        newUser.textContent = `Hello${this.model.get('username')}!`;
 // Generating size buttons on load of the page
         this.model.collectionOfTypes.forEach(function(model) {
             let sizeButtons = document.createElement('button');

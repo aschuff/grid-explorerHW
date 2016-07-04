@@ -239,10 +239,6 @@
                 '': 'logInNewGame',
             },
             logInNewGame: function() {
-                // if(who === null) {
-                //   this.navigate('logIn', {trigger:true});
-                //   return;
-                // }
                 console.log('time to log in!');
                 this.logInV.el.classList.remove('hidden');
                 this.gamePlayV.el.classList.add('hidden');
@@ -255,15 +251,6 @@
                 this.gameoverV.el.classList.add('hidden');
             },
             gameOver: function() {
-                // let self = this;
-                // let newHighScore = new HighScoreCollection()
-                // self.newHighScore.fetch({
-                //     success: function() {
-                //       console.log(self.newHighScore);
-                //         self.gameOver.model = newHighScore;
-                //         self.gameOver.render();
-                //     },
-                // });
                 console.log('start over :(');
                 this.gameoverV.el.classList.remove('hidden');
                 this.gamePlayV.el.classList.add('hidden');
@@ -334,6 +321,9 @@
             },
 
             render: function() {
+                let playerInfo = this.el.querySelector('#playerInfo');
+                playerInfo.textContent = `Username: ${this.model.get('username')}  Character: ${this.model.get('name')}`
+
                 let rightButton = this.el.querySelector('#xAxis');
                 rightButton.textContent = this.model.get('rightLeftMove');
 
@@ -347,10 +337,10 @@
                 downButton.textContent = this.model.get('upDownMove');
 
                 let allMovesTotal = this.el.querySelector('#userMoves');
-                allMovesTotal.textContent = `Total Moves: ${this.model.get('score')}`;
+                allMovesTotal.textContent = `Total Moves ${this.model.get('score')}`;
 
                 let energyLevel = this.el.querySelector('#startingEnergy');
-                energyLevel.textContent = `Total Energy: ${this.model.get('startingEnergy')}`;
+                energyLevel.textContent = `Total Energy ${this.model.get('startingEnergy')}`;
 
                 // Grid
                 this.gridGenerator();
@@ -373,8 +363,7 @@
             },
             render: function() {
                 let finalScore = this.el.querySelector('#scoreBoard')
-                finalScore.textContent = `You lost ${this.model.get('username')}
-        Final score: ${this.model.get('score')}`;
+                finalScore.textContent = `Final score: ${this.model.get('score')}`;
 
 
                 let renderScores = this.el.querySelector('#highScoreList')
@@ -412,7 +401,7 @@
             },
             render: function() {
                 let newUser = this.el.querySelector('#greeting');
-                newUser.textContent = `Hello ${this.model.get('username')}!`;
+                newUser.textContent = `Hello${this.model.get('username')}!`;
                 // Generating size buttons on load of the page
                 this.model.collectionOfTypes.forEach(function(model) {
                     let sizeButtons = document.createElement('button');

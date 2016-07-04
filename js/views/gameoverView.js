@@ -12,8 +12,7 @@ module.exports = Backbone.View.extend({
     },
     render: function() {
       let finalScore = this.el.querySelector('#scoreBoard')
-        finalScore.textContent = `You lost ${this.model.get('username')}
-        Final score: ${this.model.get('score')}`;
+        finalScore.textContent = `Final score: ${this.model.get('score')}`;
 
 
         let renderScores = this.el.querySelector('#highScoreList')

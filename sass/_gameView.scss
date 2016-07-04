@@ -1,53 +1,63 @@
 #gameField {
-    width: 80%;
-    height: 25em;
-    // display: inline-flex;
+    width: 95%;
+    height: 43em;
+    border: #FEFCD7 solid 7px;
+    text-align: center;
     padding: 1%;
-    border: dotted #3CC9BB;
-    margin-top: 2%;
-    background-color: cornflowerblue;
-    color: #FFF;
+    background-color: #A6CB45;
+    color: #FEFCD7;
+    padding: 3%;
+    margin: 0 5%;
 }
 #startingEnergy, #userMoves {
     float: right;
-    width: 13%;
+    width: 11%;
     height: 3em;
-    background-color: navy;
+    background-color: #6A8347;
+    border: #FEFCD7 solid 3px;
     padding: 0;
     margin: 1%;
     color: #FFF;
 }
 #gridArea {
-    margin: 0 auto;
-    width: 35%;
-    height: 11em;
+    margin: 3% 26%;
+    width: 40%;
+    height: 22em;
     padding: 1%;
-    background-color: navy;
+    background-color: #6A8347;
+    border: #FEFCD7 solid 7px;
 }
 .row {
-  line-height: 0;
-  margin: 0 auto;
+    line-height: 0;
+    margin: 0 auto;
 }
 .cell {
-  display: inline-block;
-  margin: 0;
-  width: 30px;
-  height: 30px;
-  border: solid #FFF 2px;
+    display: inline-block;
+    margin: 0;
+    width: 30px;
+    height: 30px;
+    border: solid #71B238 2px;
 }
 #player {
-  background-color: gray;
+    background-color: #FEFCD7;
 }
 #moveOptions {
-    display: -webkit-box;
+    display: flex;
     height: 3em;
+    margin-top: 3%;
+    margin-left: 12%;
 }
 #xAxis, #yAxis {
-    background-color: navy;
-    width: 10%;
+    background-color: #6A8347;
+    border: #FEFCD7 solid 2px;
+    width: 3%;
     height: 2em;
     color: #FFF;
+    margin: 1%;
 }
-button {
-    border: navy solid 2px;
+h1  {
+    font-size: xx-large;
+}
+p {
+  font-size: large;
 }

@@ -1,21 +1,28 @@
 #logIn {
-    border: navy solid 2px;
-    width: 30%;
-    height: 16em;
+    border: #FEFCD7 solid 7px;
     text-align: center;
     padding: 1%;
-    background-color: cornflowerblue;
-    color: #FFF;
+    background-color: #A6CB45;
+    color: #FEFCD7;
+    width: 95%;
+    height: 25em;
+    margin: 0 9%;
+}
+input {
+    border: #6A8347 solid 3px;
+    text-align: center;
 }
 button {
-    margin: 2%;
-}
-div {
-    margin: 2%;
+    margin: 1%;
+    border: #6A8347 solid 3px;
+    background-color: #FEFCD7;
+    color: #6A8347;
+    width: 12em;
 }
 #greeting {
     font-size: medium;
 }
-#charChoice {
-    // display: inline-flex;
+#startButton {
+    width: 12em;
+
 }
