@@ -1,7 +1,7 @@
 #gameField {
     width: 95%;
     height: 43em;
-    border: #FEFCD7 solid 7px;
+    border: darkgreen solid 7px;
     text-align: center;
     padding: 1%;
     background-color: #A6CB45;
@@ -13,7 +13,7 @@
     float: right;
     width: 11%;
     height: 3em;
-    background-color: #6A8347;
+    background-color: darkgreen;
     border: #FEFCD7 solid 3px;
     padding: 0;
     margin: 1%;
@@ -24,7 +24,7 @@
     width: 40%;
     height: 22em;
     padding: 1%;
-    background-color: #6A8347;
+    background-color: darkgreen;
     border: #FEFCD7 solid 7px;
 }
 .row {
@@ -48,7 +48,7 @@
     margin-left: 12%;
 }
 #xAxis, #yAxis {
-    background-color: #6A8347;
+    background-color: darkgreen;
     border: #FEFCD7 solid 2px;
     width: 3%;
     height: 2em;

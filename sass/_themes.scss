@@ -2,7 +2,10 @@
     font-family: 'Tillana', cursive;
 }
 body {
-    background-color: #6A8347;
+    background-image: url('images/grass.png');
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 .main {
     width: 80%;

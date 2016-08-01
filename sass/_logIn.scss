@@ -1,26 +1,29 @@
 #logIn {
-    border: #FEFCD7 solid 7px;
+    border: darkgreen solid 7px;
     text-align: center;
     padding: 1%;
     background-color: #A6CB45;
     color: #FEFCD7;
     width: 95%;
     height: 25em;
-    margin: 0 9%;
+    margin-bottom: 16%;
+    margin-left: 9%;
 }
 input {
-    border: #6A8347 solid 3px;
+    border: darkgreen solid 3px;
     text-align: center;
+    font-size: small;
 }
 button {
     margin: 1%;
-    border: #6A8347 solid 3px;
+    border: darkgreen solid 3px;
     background-color: #FEFCD7;
-    color: #6A8347;
+    color: darkgreen;
     width: 12em;
+    font-size: small;
 }
 #greeting {
-    font-size: medium;
+    font-size: x-large;
 }
 #startButton {
     width: 12em;
